@@ -966,8 +966,13 @@ def phishing():
                 summarydictionary[personalMessages[i]["id"]]["totalscore"] = summarydictionary[personalMessages[i]["id"]]["totalscore"] + 25
                 summarydictionary[personalMessages[i]["id"]]["score"] = summarydictionary[personalMessages[i]["id"]]["score"] + score
                 summarydictionary[personalMessages[i]["id"]]["explanations"] = summarydictionary[personalMessages[i]["id"]]["explanations"] + phishingMessage
+                explanation = "Safe to open"
+                if "Spam" in summarydictionary[personalMessages[i]["id"]]["explanations"]:
+                    explanation = "Spam, Consider the risks in each table and assess the email with your understanding"
+                elif "Phishing" in summarydictionary[personalMessages[i]["id"]]["explanations"]:
+                    explanation = "Practice caution and(or) ignore this email"
                 emctable.insert(parent="", index=i, iid=i, text=personalMessages[i]["id"],
-                                values=(emailString, personalMessages[i]["snippet"] if len(personalMessages[i]["snippet"]) != 0 else "Image", str(summarydictionary[personalMessages[i]["id"]]["score"]) + "/" + str(summarydictionary[personalMessages[i]["id"]]["totalscore"]), summarydictionary[personalMessages[i]["id"]]["explanations"]))
+                                values=(emailString, personalMessages[i]["snippet"] if len(personalMessages[i]["snippet"]) != 0 else "Image", str(summarydictionary[personalMessages[i]["id"]]["score"]) + "/" + str(summarydictionary[personalMessages[i]["id"]]["totalscore"]), explanation))
             
                 urltable.column("Email", minwidth=240, anchor="w")
                 urltable.column("Subject", width=515, anchor="w")
